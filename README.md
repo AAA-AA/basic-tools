@@ -40,7 +40,7 @@
 
 #### 快速开始
 1. 获取代码 
-`git clone xxxx`
+`git clone git@github.com:AAA-AA/basic-tools.git`
 2. 改造代码，配置大文件路径，设置处理线程数，handle自行处理
 
 ```
