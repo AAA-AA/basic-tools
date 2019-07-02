@@ -123,22 +123,6 @@ public class BigFileReader {
         public long start;
         public long end;
 
-        public long getStart() {
-            return start;
-        }
-
-        public void setStart(long start) {
-            this.start = start;
-        }
-
-        public long getEnd() {
-            return end;
-        }
-
-        public void setEnd(long end) {
-            this.end = end;
-        }
-
         @Override
         public String toString() {
             return "star="+start+";end="+end;
@@ -172,6 +156,7 @@ public class BigFileReader {
                     mapBuffer.get(readBuff, 0, readLength);
                     for (int i = 0; i < readLength; i++) {
                         byte tmp = readBuff[i];
+                        //碰到换行符
                         if (tmp == '\n' || tmp == '\r') {
                             handle(bos.toByteArray());
                             bos.reset();

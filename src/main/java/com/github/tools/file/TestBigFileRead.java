@@ -14,12 +14,13 @@ public class TestBigFileRead {
 
     public static void main(String[] args) {
         AtomicLong counter = new AtomicLong(0);
+        String smallFilePath = "/Users/renhongqiang/Downloads/work-doc/2000W/demo.txt";
         String bigFilePath = "/Users/renhongqiang/Downloads/work-doc/2000W/test.csv";
-        BigFileReader.Builder builder = new BigFileReader.Builder(bigFilePath, line -> System.out.println(String.format("total record: %s,line is: %s", counter.incrementAndGet(), line)));
+        BigFileReader.Builder builder = new BigFileReader.Builder(smallFilePath, line -> System.out.println(String.format("total record: %s,line is: %s", counter.incrementAndGet(), line)));
         BigFileReader bigFileReader = builder
-                .threadPoolSize(100)
+                .threadPoolSize(2)
                 .charset(StandardCharsets.UTF_8)
-                .bufferSize(1024 * 1024).build();
+                .bufferSize(1024).build();
         bigFileReader.start();
     }
 
