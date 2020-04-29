@@ -1,7 +1,5 @@
 package com.github.tools.file;
 
-import lombok.Data;
-
 import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -189,6 +187,9 @@ public class BigFileReader {
         }
 
         public Builder threadPoolSize(int size){
+            if (size <= 0) {
+                throw new IllegalArgumentException("线程池参数必须为大于0的整数");
+            }
             this.threadSize = size;
             return this;
         }
