@@ -69,5 +69,6 @@ public final class ExtCollections {
     public static BigDecimal scale2(BigDecimal price) {
         return null == price ? BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) : price.setScale(2, RoundingMode.HALF_UP);
     }
+
 }
 
