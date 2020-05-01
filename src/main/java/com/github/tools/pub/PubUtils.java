@@ -18,6 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * 验证工具类
+ */
 public class PubUtils {
 
         private static final String[] CAUSE_METHOD_NAMES = new String[]{"getCause", "getNextException", "getTargetException", "getException", "getSourceException", "getRootCause", "getCausedByException", "getNested", "getLinkedException", "getNestedException", "getLinkedCause", "getThrowable"};
@@ -198,6 +201,12 @@ public class PubUtils {
                 }
             }
         }
+
+    public synchronized static String cleanSpecialChar(String str){
+        //过滤掉非字母，数字，中文的符号
+        str = str.replaceAll("[^(a-zA-Z0-9\\u4e00-\\u9fa5)]", "");
+        return str;
+    }
 
         public static String join(List<Object> os, String se) {
             if (isEmpty((Collection)os)) {
