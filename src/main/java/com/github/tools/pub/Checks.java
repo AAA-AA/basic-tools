@@ -21,15 +21,13 @@ import java.util.stream.Collectors;
 /**
  * 验证工具类
  */
-public class PubUtils {
+public class Checks {
 
         private static final String[] CAUSE_METHOD_NAMES = new String[]{"getCause", "getNextException", "getTargetException", "getException", "getSourceException", "getRootCause", "getCausedByException", "getNested", "getLinkedException", "getNestedException", "getLinkedCause", "getThrowable"};
         private static final Random RANDOM = new Random();
-        public static final long MILLIS_PER_SECOND = 1000L;
         static Class<?>[] BASIC = new Class[]{String.class, Boolean.class, Character.class, Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class, Void.class};
-        private static Pattern linePattern = Pattern.compile("_(\\w)");
 
-        private PubUtils() {
+        private Checks() {
         }
 
         public static boolean isEmpty(Map<?, ?> parameters) {
@@ -242,26 +240,7 @@ public class PubUtils {
             }
         }
 
-        public static String humpToLine(String str) {
-            return str.replaceAll("[A-Z]", "_$0").toLowerCase();
-        }
 
-        public static String lineToHump(String str) {
-            str = str.toLowerCase();
-            Matcher matcher = linePattern.matcher(str);
-            StringBuffer bu = new StringBuffer();
-
-            while(matcher.find()) {
-                matcher.appendReplacement(bu, matcher.group(1).toUpperCase());
-            }
-
-            matcher.appendTail(bu);
-            return bu.toString();
-        }
-
-        public static boolean expectGreedScan(Class<?> type) {
-            return null != type && type != Object.class && !isBasicType(type) && !isProxyClass(type) && !type.isInterface() && !type.isEnum() && !type.isAnnotation() && null != type.getPackage() && !isBlank(type.getPackage().getName()) && !type.getPackage().getName().startsWith("java");
-        }
 
         public static <T extends Annotation> T findAnnotation(Field field, Method method, Class<T> a) {
             return field.isAnnotationPresent(a) ? field.getAnnotation(a) : method.getAnnotation(a);
@@ -279,39 +258,9 @@ public class PubUtils {
             return clazz != null && null != clazz.getName() && clazz.getName().contains("$$");
         }
 
-        public static <TYPE> TYPE ifThen(boolean check, Supplier<TYPE> checkDo) {
-            return check ? checkDo.get() : null;
-        }
-
-
-        @SafeVarargs
-        public static <TYPE> TYPE pick(Supplier... gs) {
-            if (isEmpty((Object[])gs)) {
-                return null;
-            } else {
-                Supplier[] var1 = gs;
-                int var2 = gs.length;
-
-                for(int var3 = 0; var3 < var2; ++var3) {
-                    Supplier<TYPE> g = var1[var3];
-                    TYPE v = g.get();
-                    if (null != v) {
-                        return v;
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        public static <K, V> Map<K, List<V>> groupBy(List<V> all, Function<V, K> by) {
-            return (Map)all.stream().filter((u) -> {
-                return by.apply(u) != null;
-            }).collect(Collectors.groupingBy(by));
-        }
 
         public static void main(String[] args) {
-            System.out.println(lineToHump("a_v_b_N_d"));
+            System.out.println(Strings.lineToHump("a_v_b_N_d"));
 
         }
 

@@ -1,6 +1,6 @@
 package com.github.tools.collection;
 
-import com.github.tools.pub.PubUtils;
+import com.github.tools.pub.Checks;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,7 +17,7 @@ public final class ExtCollections {
 
     public static <K, V, E> Map<K, V> kv(Function<E, K> kf, Function<E, V> vf, List<E> beans) {
         Map<K, V> fieldbean = new HashMap();
-        if (PubUtils.isEmpty(beans)) {
+        if (Checks.isEmpty(beans)) {
             return fieldbean;
         } else {
             Iterator iterator = beans.iterator();
@@ -33,7 +33,7 @@ public final class ExtCollections {
 
     public static <K, V> Map<K, V> kvFieldBean(Function<V, K> function, List<V> beans) {
         Map<K, V> fieldbean = new HashMap();
-        if (PubUtils.isEmpty(beans)) {
+        if (Checks.isEmpty(beans)) {
             return fieldbean;
         } else {
             Iterator iterator = beans.iterator();
@@ -48,7 +48,7 @@ public final class ExtCollections {
 
     public static <K, V> Map<K, List<V>> kvFieldBeans(Function<V, K> function, List<V> beans) {
         Map<K, List<V>> fieldbeans = new HashMap();
-        if (PubUtils.isEmpty(beans)) {
+        if (Checks.isEmpty(beans)) {
             return fieldbeans;
         } else {
             Object bean;
