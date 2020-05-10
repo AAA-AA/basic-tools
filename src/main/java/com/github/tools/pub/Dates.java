@@ -1,12 +1,24 @@
 package com.github.tools.pub;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
+@Slf4j
 public final class Dates {
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_YYYYMMDD = "yyyyMMdd";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_TIME_NO_SS = "yyyy-MM-dd HH:mm";
+    public static final String DATE_TIME_SSSS_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     private Dates() {
 
@@ -14,24 +26,29 @@ public final class Dates {
 
     /**
      * 昨天零点
+     *
      * @return
      */
     public static Date yesterday() {
+        LocalDateTime startOfDay = LocalDate.now().minusDays(1).atStartOfDay();
+        Date today = Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
         return new Date();
     }
 
     /**
      * 今天零点
+     *
      * @return
      */
     public static Date today() {
-        LocalDateTime startOfDay = LocalDate.now().minusDays(1).atStartOfDay();
-        Date today = Date.from(startOfDay.atZone( ZoneId.systemDefault()).toInstant());
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        Date today = Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
         return today;
     }
 
     /**
      * 当前时间
+     *
      * @return
      */
     public static Date now() {
@@ -47,6 +64,61 @@ public final class Dates {
             return isSameDay(cal1, cal2);
         } else {
             throw new IllegalArgumentException("The date must not be null");
+        }
+    }
+
+    /**
+     * 默认格式化为yyyy-MM-dd HH:mm:ss
+     * @param date
+     * @return
+     */
+    public static String format(Date date, String format) {
+        DateFormat dateFormat = new SimpleDateFormat(format);
+        try {
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            log.error("格式化时间错误！formatter: "+ format, e);
+            throw new IllegalArgumentException("格式化时间错误！请检查输入参数");
+        }
+    }
+    /**
+     * 默认格式化为yyyy-MM-dd HH:mm:ss
+     * @param date
+     * @return
+     */
+    public static String format(Date date) {
+        DateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
+        try {
+            return format.format(date);
+        } catch (Exception e) {
+            log.error("格式化时间错误！date: "+ date, e);
+            throw new IllegalArgumentException("格式化时间错误！");
+        }
+    }
+
+    public static Date parse(String datetimeStr, String pattern) {
+        try {
+            DateFormat mFormat = new SimpleDateFormat(pattern);
+            return mFormat.parse(datetimeStr);
+        } catch (ParseException e) {
+            log.error("parse date error, str:" + datetimeStr+", pattern: "+ pattern, e);
+            throw new IllegalArgumentException("时间格式化错误，请检查输入参数！");
+        }
+    }
+
+    /**
+     * 默认以yyyy-MM-dd HH:mm:ss格式化
+     *
+     * @param datetimeStr
+     * @return
+     */
+    public static Date parse(String datetimeStr) {
+        DateFormat mFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
+        try {
+            return mFormat.parse(datetimeStr);
+        } catch (ParseException e) {
+            log.error("parse date error, str:" + datetimeStr, e);
+            throw new IllegalArgumentException("时间格式化错误，请检查输入参数！");
         }
     }
 
@@ -142,7 +214,7 @@ public final class Dates {
     }
 
     public static void main(String[] args) {
-        System.out.println(Dates.addDays(Dates.now(),1));
+        System.out.println(Dates.addDays(Dates.now(), 1));
     }
 
 }
