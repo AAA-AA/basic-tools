@@ -29,4 +29,71 @@ public final class Strings {
         matcher.appendTail(bu);
         return bu.toString();
     }
+
+    public static String substring(String str, int start, int end) {
+        if (str == null) {
+            return null;
+        } else {
+            if (end < 0) {
+                end += str.length();
+            }
+
+            if (start < 0) {
+                start += str.length();
+            }
+
+            if (end > str.length()) {
+                end = str.length();
+            }
+
+            if (start > end) {
+                return "";
+            } else {
+                if (start < 0) {
+                    start = 0;
+                }
+
+                if (end < 0) {
+                    end = 0;
+                }
+
+                return str.substring(start, end);
+            }
+        }
+    }
+
+    public static String left(String str, int len) {
+        if (str == null) {
+            return null;
+        } else if (len < 0) {
+            return "";
+        } else {
+            return str.length() <= len ? str : str.substring(0, len);
+        }
+    }
+
+    public static String right(String str, int len) {
+        if (str == null) {
+            return null;
+        } else if (len < 0) {
+            return "";
+        } else {
+            return str.length() <= len ? str : str.substring(str.length() - len);
+        }
+    }
+
+    public static String mid(String str, int pos, int len) {
+        if (str == null) {
+            return null;
+        } else if (len >= 0 && pos <= str.length()) {
+            if (pos < 0) {
+                pos = 0;
+            }
+
+            return str.length() <= pos + len ? str.substring(pos) : str.substring(pos, pos + len);
+        } else {
+            return "";
+        }
+    }
+
 }
