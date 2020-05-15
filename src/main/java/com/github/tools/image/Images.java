@@ -1,6 +1,7 @@
 package com.github.tools.image;
 
 import com.github.tools.pub.Base64s;
+import com.github.tools.pub.Checks;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -10,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -20,7 +22,8 @@ import java.util.Iterator;
  **/
 @Slf4j
 public final class Images {
-    private Images() {}
+    private Images() {
+    }
 
     public static boolean isGif(byte[] bytes) {
         boolean flag = false;
@@ -133,21 +136,43 @@ public final class Images {
         return false;
     }
 
-    public static String getBase64ByImgUrl(String imageUrl) {
-        String imageString = null;
+    /**
+     * 支持将本地及互联网图片转为base64
+     * @param imageUri
+     * @return
+     */
+    public static String getBase64ByImgUri(String imageUri) {
+        if (Checks.isBlank(imageUri)) {
+            return null;
+        }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
-            URL url = new URL(imageUrl);
-            BufferedImage img = ImageIO.read(url);
+            BufferedImage img = null;
+            if (imageUri.contains("http")) {
+                URL url = new URL(imageUri);
+                img = ImageIO.read(url);
+            } else {
+                File file = new File(imageUri);
+                if (!file.exists()) {
+                    log.error(imageUri+ "图片路径不存在！");
+                    return null;
+                }
+                img = ImageIO.read(file);
+            }
             //统一转成jpg
             ImageIO.write(img, "jpg", bos);
             byte[] imageBytes = bos.toByteArray();
-            imageString = Base64s.encodeToString(imageBytes);
-            bos.close();
+            return Base64s.encodeToString(imageBytes);
         } catch (Exception e) {
             log.error("getBase64ByImgUrl error", e);
+        } finally {
+            try {
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return imageString;
+        return null;
     }
 
     public static byte[] readImgUrlToByteArray(String imageUrl) {
