@@ -13,7 +13,7 @@ list.add(order3);
 Map<String, Order> kvFieldBean = ExtCollections.kvFieldBean(Order::getOwner, list);
 
 ```
-[](../images/ext-collection-1.jpg)
+![](../images/ext-collection-1.jpg)
 
 ### list中key相同合并操作
 
@@ -29,7 +29,7 @@ list.add(order3);
 Map<String, List<Order>> kvFieldBeans = ExtCollections.kvFieldBeans(Order::getOwner, list);
 System.out.println(kvFieldBeans);
 ```
-[](../images/ext-collection-2.jpg)
+![](../images/ext-collection-2.jpg)
 ### list中任选k,v字段，重组为map
 
 ```java
@@ -42,4 +42,4 @@ list.add(order2);
 list.add(order3);
 Map<String, String> map = ExtCollections.kv(Order::getId, Order::getOwner, list);
 ```
-[](../images/ext-collection-3.jpg)
+![](../images/ext-collection-3.jpg)
