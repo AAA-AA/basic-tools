@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 @Slf4j
 public final class Dates {
@@ -121,6 +124,37 @@ public final class Dates {
             throw new IllegalArgumentException("时间格式化错误，请检查输入参数！");
         }
     }
+
+    public static LocalDateTime convert(long millis) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), TimeZone.getDefault().toZoneId());
+    }
+
+    public static LocalDateTime parseToLDT(String text) {
+        return LocalDateTime.parse(standardDateTime(text), DateTimeFormatter.ofPattern("yyyyMMddHHmmss", Locale.CHINA));
+    }
+
+    private static String standardDateTime(String text) {
+        String standard = text.replaceAll("\\D", "");
+        StringBuilder bu = new StringBuilder(standard);
+
+        while (true) {
+            while (bu.length() < 14) {
+                if (bu.length() == 5 && bu.charAt(4) == '0' || bu.length() == 7 && bu.charAt(6) == '0') {
+                    bu.append('1');
+                } else {
+                    bu.append('0');
+                }
+            }
+
+            standard = bu.toString();
+            if (standard.length() > 14) {
+                standard = standard.substring(0, 14);
+            }
+
+            return standard;
+        }
+    }
+
 
     public static boolean isSameDay(Calendar cal1, Calendar cal2) {
         if (cal1 != null && cal2 != null) {

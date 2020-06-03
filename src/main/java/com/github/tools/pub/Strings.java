@@ -12,6 +12,11 @@ public final class Strings {
 
     private Strings() {}
 
+    public synchronized static String cleanSpecialChar(String str) {
+        //过滤掉非字母，数字，中文的符号
+        str = str.replaceAll("[^(a-zA-Z0-9\\u4e00-\\u9fa5)]", "");
+        return str;
+    }
 
     public static String humpToLine(String str) {
         return str.replaceAll("[A-Z]", "_$0").toLowerCase();

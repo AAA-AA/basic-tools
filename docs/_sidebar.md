@@ -12,10 +12,10 @@
   * [身份证工具类使用](md/idcards.md)
   * [日志格式化工具类使用](md/log-formats.md)
 
-* 部署
-  * [部署流程](zh-cn/deploy.md)
+* jar包部署
+  * [jar包部署流程](md/deploy.md)
 
 * FAQ
-  * [常见问题](zh-cn/faq.md)
+  * [常见问题](md/faq.md)
 
 

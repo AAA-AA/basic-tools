@@ -6,14 +6,12 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * 验证工具类
@@ -142,36 +140,6 @@ public class Checks {
         return null;
     }
 
-    public static LocalDateTime convert(long millis) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), TimeZone.getDefault().toZoneId());
-    }
-
-    public static LocalDateTime parse(String text) {
-        return LocalDateTime.parse(standardDateTime(text), DateTimeFormatter.ofPattern("yyyyMMddHHmmss", Locale.CHINA));
-    }
-
-    private static String standardDateTime(String text) {
-        String standard = text.replaceAll("\\D", "");
-        StringBuilder bu = new StringBuilder(standard);
-
-        while (true) {
-            while (bu.length() < 14) {
-                if (bu.length() == 5 && bu.charAt(4) == '0' || bu.length() == 7 && bu.charAt(6) == '0') {
-                    bu.append('1');
-                } else {
-                    bu.append('0');
-                }
-            }
-
-            standard = bu.toString();
-            if (standard.length() > 14) {
-                standard = standard.substring(0, 14);
-            }
-
-            return standard;
-        }
-    }
-
     private static BigDecimal removePercent(String text) {
         if (text.contains("%")) {
             return (new BigDecimal(text.replace("%", ""))).movePointLeft(2);
@@ -203,12 +171,6 @@ public class Checks {
                 return Number.class.isAssignableFrom(c) ? (new DecimalFormat(format)).format(value) : String.valueOf(value);
             }
         }
-    }
-
-    public synchronized static String cleanSpecialChar(String str) {
-        //过滤掉非字母，数字，中文的符号
-        str = str.replaceAll("[^(a-zA-Z0-9\\u4e00-\\u9fa5)]", "");
-        return str;
     }
 
     public static String join(List<Object> os, String se) {
