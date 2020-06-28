@@ -19,4 +19,10 @@ public class TestIdCards {
         System.out.println(birthday);
 
     }
+
+    @Test
+    public void testGenerate() {
+        System.out.println(IdCards.generate());
+        System.out.println(IdCards.generateByAreaName("东城区"));
+    }
 }
