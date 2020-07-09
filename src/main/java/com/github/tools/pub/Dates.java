@@ -125,6 +125,10 @@ public final class Dates {
         }
     }
 
+    public static String parseTimestamp(long timestamp) {
+        return null;
+    }
+
     public static LocalDateTime convert(long millis) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), TimeZone.getDefault().toZoneId());
     }
