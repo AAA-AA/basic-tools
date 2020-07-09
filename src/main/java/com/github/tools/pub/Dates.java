@@ -17,11 +17,22 @@ import java.util.TimeZone;
 
 @Slf4j
 public final class Dates {
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
-    public static final String DATE_YYYYMMDD = "yyyyMMdd";
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DATE_TIME_NO_SS = "yyyy-MM-dd HH:mm";
-    public static final String DATE_TIME_SSSS_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    enum Format {
+        DATE_FORMAT("yyyy-MM-dd"),
+        DATE_YYYYMMDD("yyyyMMdd"),
+        DATE_TIME_FORMAT("yyyy-MM-dd HH:mm:ss"),
+        DATE_TIME_NO_SS("yyyy-MM-dd HH:mm"),
+        DATE_TIME_SSSS_FORMAT("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        private String value;
+
+        Format(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 
     private Dates() {
 
@@ -72,6 +83,7 @@ public final class Dates {
 
     /**
      * 默认格式化为yyyy-MM-dd HH:mm:ss
+     *
      * @param date
      * @return
      */
@@ -80,33 +92,46 @@ public final class Dates {
         try {
             return dateFormat.format(date);
         } catch (Exception e) {
-            log.error("格式化时间错误！formatter: "+ format, e);
+            log.error("格式化时间错误！formatter: " + format, e);
             throw new IllegalArgumentException("格式化时间错误！请检查输入参数");
         }
     }
+
     /**
      * 默认格式化为yyyy-MM-dd HH:mm:ss
+     *
      * @param date
      * @return
      */
     public static String format(Date date) {
-        DateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
+        DateFormat format = new SimpleDateFormat(Format.DATE_TIME_FORMAT.getValue());
         try {
             return format.format(date);
         } catch (Exception e) {
-            log.error("格式化时间错误！date: "+ date, e);
+            log.error("格式化时间错误！date: " + date, e);
             throw new IllegalArgumentException("格式化时间错误！");
         }
     }
 
-    public static Date parse(String datetimeStr, String pattern) {
+    public static Date parse(String datetimeStr, Format format) {
         try {
+            String pattern = getPattern(format);
             DateFormat mFormat = new SimpleDateFormat(pattern);
             return mFormat.parse(datetimeStr);
         } catch (ParseException e) {
-            log.error("parse date error, str:" + datetimeStr+", pattern: "+ pattern, e);
+            log.error("parse date error, str:" + datetimeStr + ", format: " + format, e);
             throw new IllegalArgumentException("时间格式化错误，请检查输入参数！");
         }
+    }
+
+    private static String getPattern(Format format) {
+        Format[] values = Format.values();
+        for (Format f : values) {
+            if (format.equals(f)) {
+                return f.getValue();
+            }
+        }
+        throw new IllegalArgumentException("未找到对应格式化类型！" + format.getValue());
     }
 
     /**
@@ -116,17 +141,26 @@ public final class Dates {
      * @return
      */
     public static Date parse(String datetimeStr) {
-        DateFormat mFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
-        try {
-            return mFormat.parse(datetimeStr);
-        } catch (ParseException e) {
-            log.error("parse date error, str:" + datetimeStr, e);
-            throw new IllegalArgumentException("时间格式化错误，请检查输入参数！");
-        }
+        return parse(datetimeStr, Format.DATE_TIME_FORMAT);
     }
 
-    public static String parseTimestamp(long timestamp) {
-        return null;
+    public static String format(LocalDateTime time, Format format) {
+        return DateTimeFormatter.ofPattern(getPattern(format)).format(time);
+    }
+
+    public static String format(LocalDateTime time) {
+        return format(time, Format.DATE_TIME_FORMAT);
+    }
+
+    /**
+     * 将毫秒时间戳转为默认字符串
+     *
+     * @param timestamp
+     * @return
+     */
+    public static String format(long timestamp) {
+        LocalDateTime convert = convert(timestamp);
+        return format(convert, Format.DATE_TIME_FORMAT);
     }
 
     public static LocalDateTime convert(long millis) {
