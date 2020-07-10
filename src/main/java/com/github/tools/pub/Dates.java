@@ -17,7 +17,7 @@ import java.util.TimeZone;
 
 @Slf4j
 public final class Dates {
-    enum Format {
+    public enum Format {
         DATE_FORMAT("yyyy-MM-dd"),
         DATE_YYYYMMDD("yyyyMMdd"),
         DATE_TIME_FORMAT("yyyy-MM-dd HH:mm:ss"),
@@ -284,9 +284,4 @@ public final class Dates {
             throw new IllegalArgumentException("date can't be null");
         }
     }
-
-    public static void main(String[] args) {
-        System.out.println(Dates.addDays(Dates.now(), 1));
-    }
-
 }
