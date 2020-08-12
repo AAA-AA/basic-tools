@@ -60,7 +60,7 @@ public static void main(String[] args) {
 
 支持集合、字符串、对象判空，注解类判定，以及各类综合操作
 
-![](docs/images/checks-1.png)
+![](/docs/images/checks-1.png)
 
 ## 日期工具类使用说明
 
