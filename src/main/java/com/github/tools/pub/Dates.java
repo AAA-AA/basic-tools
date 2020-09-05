@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
@@ -162,6 +159,11 @@ public final class Dates {
         LocalDateTime convert = convert(timestamp);
         return format(convert, Format.DATE_TIME_FORMAT);
     }
+
+    public static long revert(LocalDateTime dateTime) {
+        return dateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+    }
+
 
     public static LocalDateTime convert(long millis) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), TimeZone.getDefault().toZoneId());
