@@ -60,7 +60,7 @@ public static void main(String[] args) {
 
 支持集合、字符串、对象判空，注解类判定，以及各类综合操作
 
-![](docs/images/checks-1.png)
+![](https://github.com/AAA-AA/basic-tools/blob/master/docs/images/checks-1.png)
 
 ## 日期工具类使用说明
 
@@ -100,7 +100,7 @@ list.add(order3);
 Map<String, Order> kvFieldBean = ExtCollections.kvFieldBean(Order::getOwner, list);
 
 ```
-![](docs/images/ext-collection-1.jpg)
+![](https://github.com/AAA-AA/basic-tools/blob/master/docs/images/ext-collection-1.jpg)
 
 ### list中key相同合并操作
 
@@ -116,7 +116,7 @@ list.add(order3);
 Map<String, List<Order>> kvFieldBeans = ExtCollections.kvFieldBeans(Order::getOwner, list);
 System.out.println(kvFieldBeans);
 ```
-![](docs/images/ext-collection-2.jpg)
+![](https://github.com/AAA-AA/basic-tools/blob/master/docs/images/ext-collection-2.jpg)
 ### list中任选k,v字段，重组为map
 
 ```java
@@ -129,7 +129,7 @@ list.add(order2);
 list.add(order3);
 Map<String, String> map = ExtCollections.kv(Order::getId, Order::getOwner, list);
 ```
-![](docs/images/ext-collection-3.jpg)
+![](https://github.com/AAA-AA/basic-tools/blob/master/docs/images/ext-collection-3.jpg)
 
 ## 身份证工具类说明
 
