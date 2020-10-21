@@ -160,6 +160,18 @@ public final class Dates {
         return format(convert, Format.DATE_TIME_FORMAT);
     }
 
+    /**
+     * 将毫秒时间戳转为默认字符串
+     *
+     * @param timestamp
+     * @param format
+     * @return
+     */
+    public static String format(long timestamp,  Format format) {
+        LocalDateTime convert = convert(timestamp);
+        return format(convert, format);
+    }
+
     public static long revert(LocalDateTime dateTime) {
         return dateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
     }
