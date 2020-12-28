@@ -131,6 +131,10 @@ public final class Dates {
         throw new IllegalArgumentException("未找到对应格式化类型！" + format.getValue());
     }
 
+    public static Date parse(LocalDateTime dateTime) {
+        return parse(revert(dateTime));
+    }
+
     /**
      * 默认以yyyy-MM-dd HH:mm:ss格式化
      *
@@ -139,6 +143,16 @@ public final class Dates {
      */
     public static Date parse(String datetimeStr) {
         return parse(datetimeStr, Format.DATE_TIME_FORMAT);
+    }
+
+    /**
+     * 默认以yyyy-MM-dd HH:mm:ss格式化
+     *
+     * @param timestamp
+     * @return
+     */
+    public static Date parse(long timestamp) {
+        return new Date(timestamp);
     }
 
     public static String format(LocalDateTime time, Format format) {
