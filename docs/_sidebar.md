@@ -11,6 +11,8 @@
   * [日期工具类使用](md/dates.md)
   * [身份证工具类使用](md/idcards.md)
   * [日志格式化工具类使用](md/log-formats.md)
+  * [速率监控工具使用说明](md/progress-listener.md)
+  * [解压缩工具使用说明](md/tars.md)
 
 * jar包部署
   * [jar包部署流程](md/deploy.md)
