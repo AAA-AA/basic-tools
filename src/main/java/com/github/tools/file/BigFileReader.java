@@ -1,5 +1,7 @@
 package com.github.tools.file;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -14,6 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Created by renhongqiang on 2019-07-02 14:09
  */
+@Slf4j
 public class BigFileReader {
     private int threadPoolSize;
     private Charset charset;
@@ -26,70 +29,71 @@ public class BigFileReader {
     private CyclicBarrier cyclicBarrier;
     private AtomicLong counter = new AtomicLong(0);
 
-    public BigFileReader(File file, IFileHandle handle, Charset charset, int bufferSize, int threadPoolSize){
+    public BigFileReader(File file, IFileHandle handle, Charset charset, int bufferSize, int threadPoolSize) {
         this.fileLength = file.length();
         this.handle = handle;
         this.charset = charset;
         this.bufferSize = bufferSize;
         this.threadPoolSize = threadPoolSize;
         try {
-            this.rAccessFile = new RandomAccessFile(file,"r");
+            this.rAccessFile = new RandomAccessFile(file, "r");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("文件不存在！");
         }
         this.executorService = Executors.newFixedThreadPool(threadPoolSize);
         startEndPairs = new HashSet<StartEndPair>();
     }
 
-    public void start(){
-        long everySize = this.fileLength/this.threadPoolSize;
+    public void start() {
+        long everySize = this.fileLength / this.threadPoolSize;
         try {
             calculateStartEnd(0, everySize);
         } catch (IOException e) {
             e.printStackTrace();
+            log.error("calculateStartEnd error", e);
             return;
         }
 
         final long startTime = System.currentTimeMillis();
         cyclicBarrier = new CyclicBarrier(startEndPairs.size(), () -> {
-            System.out.println("use time: "+(System.currentTimeMillis()-startTime));
-            System.out.println("all line: "+counter.get());
+            log.info("use time: " + (System.currentTimeMillis() - startTime));
+            log.info("all line: " + counter.get());
             shutdown();
         });
-        for(StartEndPair pair:startEndPairs){
-            System.out.println("分配分片："+pair);
+        for (StartEndPair pair : startEndPairs) {
+            log.info("分配分片：" + pair);
             this.executorService.execute(new SliceReaderTask(pair));
         }
     }
 
-    private void calculateStartEnd(long start,long size) throws IOException{
-        if(start>fileLength-1){
+    private void calculateStartEnd(long start, long size) throws IOException {
+        if (start > fileLength - 1) {
             return;
         }
         StartEndPair pair = new StartEndPair();
-        pair.start=start;
-        long endPosition = start+size-1;
-        if(endPosition>=fileLength-1){
-            pair.end=fileLength-1;
+        pair.start = start;
+        long endPosition = start + size - 1;
+        if (endPosition >= fileLength - 1) {
+            pair.end = fileLength - 1;
             startEndPairs.add(pair);
             return;
         }
 
         rAccessFile.seek(endPosition);
-        byte tmp =(byte) rAccessFile.read();
-        while(tmp!='\n' && tmp!='\r'){
+        byte tmp = (byte) rAccessFile.read();
+        while (tmp != '\n' && tmp != '\r') {
             endPosition++;
-            if(endPosition>=fileLength-1){
-                endPosition=fileLength-1;
+            if (endPosition >= fileLength - 1) {
+                endPosition = fileLength - 1;
                 break;
             }
             rAccessFile.seek(endPosition);
-            tmp =(byte) rAccessFile.read();
+            tmp = (byte) rAccessFile.read();
         }
-        pair.end=endPosition;
+        pair.end = endPosition;
         startEndPairs.add(pair);
 
-        calculateStartEnd(endPosition+1, size);
+        calculateStartEnd(endPosition + 1, size);
 
     }
 
@@ -116,14 +120,13 @@ public class BigFileReader {
     }
 
 
-
     private static class StartEndPair {
         public long start;
         public long end;
 
         @Override
         public String toString() {
-            return "star="+start+";end="+end;
+            return "star=" + start + ";end=" + end;
         }
     }
 
@@ -173,20 +176,21 @@ public class BigFileReader {
         }
     }
 
-    public static class Builder{
-        private int threadSize=1;
+    public static class Builder {
+        private int threadSize = 1;
         private Charset charset;
-        private int bufferSize=1024*1024;
+        private int bufferSize = 1024 * 1024;
         private IFileHandle handle;
         private File file;
-        public Builder(String file,IFileHandle handle){
+
+        public Builder(String file, IFileHandle handle) {
             this.file = new File(file);
-            if(!this.file.exists())
+            if (!this.file.exists())
                 throw new IllegalArgumentException("文件不存在！");
             this.handle = handle;
         }
 
-        public Builder threadPoolSize(int size){
+        public Builder threadPoolSize(int size) {
             if (size <= 0) {
                 throw new IllegalArgumentException("线程池参数必须为大于0的整数");
             }
@@ -194,18 +198,18 @@ public class BigFileReader {
             return this;
         }
 
-        public Builder charset(Charset charset){
-            this.charset= charset;
+        public Builder charset(Charset charset) {
+            this.charset = charset;
             return this;
         }
 
-        public Builder bufferSize(int bufferSize){
+        public Builder bufferSize(int bufferSize) {
             this.bufferSize = bufferSize;
             return this;
         }
 
-        public BigFileReader build(){
-            return new BigFileReader(this.file,this.handle,this.charset,this.bufferSize,this.threadSize);
+        public BigFileReader build() {
+            return new BigFileReader(this.file, this.handle, this.charset, this.bufferSize, this.threadSize);
         }
     }
 
