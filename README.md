@@ -34,6 +34,7 @@
     + [驼峰变下划线(HumpToLine)](#)
     + [截取字符串(Cut string)](#)
   * [速率监控工具使用说明](#速率监控工具说明)
+  * [本地过期map使用说明](#过期map使用说明)
 
 
 ## 超大文本极速读取工具类
@@ -277,3 +278,10 @@ picProgress.startLog();
 ### 说明
 1.默认10秒钟打印一次日志(可以指定，避免大量日志过多)
 2.可以统计平均速率，和当前的速率
+
+## 过期map使用说明
+### 过期map
+```java
+ExpireMap<String, String> map = new ExpireMap<>(1, 10);
+map.put("aaa", "test", 3, TimeUnit.SECONDS);
+```

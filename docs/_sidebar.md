@@ -13,6 +13,7 @@
   * [日志格式化工具类使用](md/log-formats.md)
   * [速率监控工具使用说明](md/progress-listener.md)
   * [解压缩工具使用说明](md/tars.md)
+  * [本地过期map使用说明](md/expire-map.md)
 
 * jar包部署
   * [jar包部署流程](md/deploy.md)

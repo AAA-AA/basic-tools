@@ -178,6 +178,7 @@ public class ExpireMap<K, V> extends ConcurrentHashMap<K, V> {
 
     public static void main(String[] args) throws InterruptedException {
         ExpireMap<String, String> map = new ExpireMap<>(1, 10);
+        map.put("aaa", "test", 3, TimeUnit.SECONDS);
         ExecutorService executorService = Executors.newFixedThreadPool(100);
 
         for (int i = 1; i < 100; i++) {
