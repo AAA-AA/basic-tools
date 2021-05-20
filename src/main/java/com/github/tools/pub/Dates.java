@@ -14,23 +14,6 @@ import java.util.TimeZone;
 
 @Slf4j
 public final class Dates {
-    public enum Format {
-        DATE_FORMAT("yyyy-MM-dd"),
-        DATE_YYYYMMDD("yyyyMMdd"),
-        DATE_TIME_FORMAT("yyyy-MM-dd HH:mm:ss"),
-        DATE_TIME_NO_SS("yyyy-MM-dd HH:mm"),
-        DATE_TIME_SSSS_FORMAT("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        private String value;
-
-        Format(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
-
     private Dates() {
 
     }
@@ -75,6 +58,16 @@ public final class Dates {
             return isSameDay(cal1, cal2);
         } else {
             throw new IllegalArgumentException("The date must not be null");
+        }
+    }
+
+    public static String format(Date date, Format format) {
+        DateFormat dateFormat = new SimpleDateFormat(getPattern(format));
+        try {
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            log.error("格式化时间错误！formatter: " + format, e);
+            throw new IllegalArgumentException("格式化时间错误！请检查输入参数");
         }
     }
 
@@ -157,6 +150,14 @@ public final class Dates {
 
     public static String format(LocalDateTime time, Format format) {
         return DateTimeFormatter.ofPattern(getPattern(format)).format(time);
+    }
+
+    public static DateTimeFormatter formatter(Format format) {
+        return DateTimeFormatter.ofPattern(getPattern(format));
+    }
+
+    public static String format(String src, Format srcFormat, Format dstFormat) {
+        return DateTimeFormatter.ofPattern(getPattern(dstFormat)).format(LocalDateTime.parse(src, formatter(srcFormat)));
     }
 
     public static String format(LocalDateTime time) {

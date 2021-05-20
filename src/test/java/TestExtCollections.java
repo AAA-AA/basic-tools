@@ -28,7 +28,11 @@ public class TestExtCollections {
 
         Map<String, Order> orderMap = list.stream().collect(Collectors.toMap(Order::getOwner, e -> e));
         System.out.println(kvFieldBean.size() == orderMap.size());
-
+        byte b = (byte)128;
+        System.out.println(b);
+        byte c = 5;
+        byte d = (byte) 200;
+        //float e = 1.5;
     }
 
 
