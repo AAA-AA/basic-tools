@@ -1,3 +1,4 @@
+import com.github.tools.pub.Checks;
 import org.junit.Test;
 
 /**
@@ -8,7 +9,10 @@ public class TestChecks {
 
     @Test
     public void testNullOrEmpty() {
-        String s = "";
+        String sortFieldTwo = "";
+        if (Checks.isNotBlank(sortFieldTwo) && sortFieldTwo.equals("null")) {
+            //doBiz
+        }
 
 
 
