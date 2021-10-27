@@ -15,7 +15,7 @@
         <fastjson.version>1.2.62</fastjson.version>
         <commons.lang3.version>3.7</commons.lang3.version>
         <guava.version>30.0-jre</guava.version>
-        <commons.io.version>2.4</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <commons.compress.version>1.21</commons.compress.version>
     </properties>
     <dependencies>
