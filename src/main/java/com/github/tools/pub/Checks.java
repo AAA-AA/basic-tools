@@ -45,8 +45,16 @@ public class Checks {
         return false;
     }
 
-    public static boolean isNotEmpty(Collection<?> parameters) {
-        return !isEmpty(parameters);
+    public static boolean isNull(Object obj) {
+        return null == obj;
+    }
+
+    public static boolean isNotNull(Object obj) {
+        return !isNull(obj);
+    }
+
+    public static boolean isNotEmpty(Object obj) {
+        return !isEmpty(obj);
     }
 
     public static boolean isBlank(CharSequence cs) {
@@ -57,7 +65,6 @@ public class Checks {
                     return false;
                 }
             }
-
             return true;
         } else {
             return true;

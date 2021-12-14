@@ -25,8 +25,8 @@ public final class Dates {
      */
     public static Date yesterday() {
         LocalDateTime startOfDay = LocalDate.now().minusDays(1).atStartOfDay();
-        Date today = Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
-        return new Date();
+        Date yesterDay = Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
+        return yesterDay;
     }
 
     /**
