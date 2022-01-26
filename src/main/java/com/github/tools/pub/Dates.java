@@ -7,10 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 @Slf4j
 public final class Dates {
@@ -300,17 +297,11 @@ public final class Dates {
     }
 
     private static Date set(Date date, int calendarField, int amount) {
-        validateDateNotNull(date);
+        Objects.requireNonNull(date,"date can't be null");
         Calendar c = Calendar.getInstance();
         c.setLenient(false);
         c.setTime(date);
         c.set(calendarField, amount);
         return c.getTime();
-    }
-
-    private static void validateDateNotNull(Date date) {
-        if (date == null) {
-            throw new IllegalArgumentException("date can't be null");
-        }
     }
 }
