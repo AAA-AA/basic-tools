@@ -261,7 +261,7 @@ public final class Dates {
     }
 
     private static Date add(Date date, int calendarField, int amount) {
-        validateDateNotNull(date);
+        Objects.requireNonNull(date, "data can't be null");
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(calendarField, amount);
