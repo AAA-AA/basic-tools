@@ -172,6 +172,10 @@ public final class Dates {
         return format(convert, Format.DATE_TIME_FORMAT);
     }
 
+    public static String formatNow() {
+        return format(new Date());
+    }
+
     /**
      * 将毫秒时间戳转为默认字符串
      *

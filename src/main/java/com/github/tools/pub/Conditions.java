@@ -28,5 +28,22 @@ public final class Conditions {
         return !in(src, conditions);
     }
 
+    public static boolean or(boolean... expression) {
+        for (boolean b : expression) {
+            if (b) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean and(boolean... expression) {
+        for (boolean b : expression) {
+            if (!b) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
