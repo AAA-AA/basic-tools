@@ -75,6 +75,7 @@ public final class ExtCollections {
         return list;
     }
 
+
     public static <K,V> Map<K,V> asMap(K k, V val) {
         HashMap<K,V> map = new HashMap<>();
         map.put(k, val);
