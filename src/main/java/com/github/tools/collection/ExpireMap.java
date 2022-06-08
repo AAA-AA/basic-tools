@@ -63,7 +63,7 @@ public class ExpireMap<K, V> extends ConcurrentHashMap<K, V> {
     }
 
     public synchronized V put(K key, V value, long duration, TimeUnit unit) {
-        expireDic.put(key, System.currentTimeMillis() + unit.convert(duration, unit));
+        expireDic.put(key, System.currentTimeMillis() + unit.toMillis(duration));
         return super.put(key, value);
     }
 
